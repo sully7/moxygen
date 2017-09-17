@@ -187,13 +187,15 @@ module.exports = {
       case 'function':
         m = m.concat(memberdef.$.prot, ' '); // public, private, ...
         if (memberdef.templateparamlist) {
-          m.push('template<');
-          memberdef.templateparamlist[0].param.forEach(function (param, argn) {
-            m = m.concat(argn == 0 ? [] : ',');
-            m = m.concat([toMarkdown(param.type)]);
-            m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
-          });
-          m.push('>  \n');
+          if (memberdef.templateparamlist[0].param) {
+            m.push('template<');
+            memberdef.templateparamlist[0].param.forEach(function (param, argn) {
+              m = m.concat(argn == 0 ? [] : ',');
+              m = m.concat([toMarkdown(param.type)]);
+              m = m.concat(param.declname ? [' ', toMarkdown(param.declname)] : []);
+            });
+            m.push('>  \n');
+          }
         }
         m = m.concat(memberdef.$.inline == 'yes' ? ['inline', ' '] : []);
         m = m.concat(memberdef.$.static == 'yes' ? ['static', ' '] : []);
